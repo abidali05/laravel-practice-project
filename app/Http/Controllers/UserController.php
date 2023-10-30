@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -16,6 +17,9 @@ class UserController extends Controller
      */
     public function index(User $model)
     {
-        return view('users.index');
+        // $userId = Auth::user()->id;
+        // $users = $model->where('id',$userId)->get();
+        $users = $model->with('user_profile')->get();
+        return view('users.index', compact('users'));
     }
 }

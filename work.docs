@@ -1,0 +1,14 @@
+(a):- Middleware.
+(b):- Sending Email.
+(c):- Sending Notifications via database. Mark read and Mark read all with ajax done.
+	For guide Click here: https://blog.quickadminpanel.com/laravel-notifications-with-database-driver-internal-messages/
+(d):- Queues and jobs.
+(e):- Tracking application using google map api.
+	For guide click here: https://www.youtube.com/watch?v=eeC9N_uRvjY
+(f):- Cron jobs.
+    For guide click here: https://www.positronx.io/laravel-cron-job-task-scheduling-tutorial-with-example/
+(g):- Advanced Eloquent, DB Operations & Relationships.
+    For guide click here: https://blog.quickadminpanel.com/eloquent-relationships-the-ultimate-guide/
+      (1):- One-to-one Relationships
+      (i):- hasOne function.
+      (ii):- belongsTo function.

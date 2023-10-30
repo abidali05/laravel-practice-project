@@ -26,17 +26,27 @@
                             <tr>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Creation Date</th>
-                                <th scope="col"></th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Photo</th>
+                                <th scope="col">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($users as $user)
                             <tr>
-                                <td>Admin Admin</td>
+                                <td>{{ $user->name }}</td>
                                 <td>
-                                    <a href="mailto:admin@argon.com">admin@argon.com</a>
+                                    <a href="mailto:admin@argon.com">{{ $user->email }}</a>
                                 </td>
-                                <td>12/02/2020 11:00</td>
+                                <td>{{ $user->user_profile->address ?? 'N/A' }}</td>
+
+                                <td>
+                                    @if ($user->user_profile && $user->user_profile->photo)
+                                        <img src="{{ asset('images/' . $user->user_profile->photo) }}" alt="User Photo" class="img-thumbnail" width="50">
+                                    @else
+                                        N/A
+                                    @endif
+                                </td>
                                 <td class="text-right">
                                     <div class="dropdown">
                                         <a class="btn btn-sm btn-icon-only text-light" href="#" role="button"
@@ -49,6 +59,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

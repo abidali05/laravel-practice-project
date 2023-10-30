@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
-use Illuminate\Support\Facades\Hash;
+use App\Models\UserProfile;
 
 class ProfileController extends Controller
 {
@@ -15,7 +18,9 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        return view('profile.edit');
+        $userProfile = UserProfile::where('user_id',Auth::user()->id)->first();
+        // dd($userProfile);
+        return view('profile.edit',compact('userProfile'));
     }
 
     /**
@@ -51,4 +56,42 @@ class ProfileController extends Controller
 
         return back()->withPasswordStatus(__('Password successfully updated.'));
     }
+
+    public function profileUpdate(Request $request)
+{
+    $request->validate([
+        'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    $userId = Auth::user()->id;
+    $userProfile = UserProfile::where('user_id', $userId)->first();
+
+    if ($userProfile) {
+        $userProfile->address = $request->input('address');
+
+        if ($request->hasFile('photo')) {
+            $imageName = time().'.'.$request->file('photo')->extension();
+            $request->file('photo')->move(public_path('images'), $imageName);
+            $userProfile->photo = $imageName;
+        }
+
+        $userProfile->save();
+    } else {
+        $userProfile = new UserProfile([
+            'user_id' => $userId,
+            'address' => $request->input('address'),
+        ]);
+
+        if ($request->hasFile('photo')) {
+            $imageName = time().'.'.$request->file('photo')->extension();
+            $request->file('photo')->move(public_path('images'), $imageName);
+            $userProfile->photo = $imageName;
+        }
+
+        $userProfile->save();
+    }
+
+    return redirect()->back()->with('success', 'Profile Updated Successfully!');
+}
+
 }

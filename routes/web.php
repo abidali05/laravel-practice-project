@@ -34,11 +34,12 @@ Route::get('email-test', function(){
 
 Route::prefix('admin')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::group(['middleware' => 'auth','middleware' => 'admin'], function () {
+    Route::group(['middleware' => ['auth','admin']], function () {
         Route::post('/mark-as-read', [App\Http\Controllers\HomeController::class, 'markNotification'])->name('markNotification');
         Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
         Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
         Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
+        Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@profileUpdate']);
         Route::get('upgrade', function () {
             return view('pages.upgrade');
         })->name('upgrade');
